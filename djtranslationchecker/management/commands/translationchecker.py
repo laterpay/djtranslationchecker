@@ -2,7 +2,10 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import get_app_paths
 
+import fnmatch
+import imp
 import subprocess
+import os
 
 class Command(BaseCommand):
     help = "Checks your message files for missing or fuzzy translations"
@@ -52,14 +55,14 @@ def check_po(command, po_filepath):
 
 
 def get_po_filepaths():
-    """
-    In the absence of a nice Django cross-version "give me all the apps" to iterate through, I apologise...
+    apps = settings.INSTALLED_APPS
 
-    This is grim.
-    """
+    pos = []
+    for app_name in apps:
+        _, path, _ = imp.find_module(app_name)
 
-    import subprocess
+        for root, dirnames, filenames in os.walk(path):
+            for filename in fnmatch.filter(filenames, '*.po'):
+                pos.append(os.path.join(root, filename))
 
-    pos = subprocess.check_output("find * -name django.po", shell=True) # * not . to avoid .git etc., with optimistic and awful shell expansion :(
-
-    return pos.strip().split('\n')
+    return pos
