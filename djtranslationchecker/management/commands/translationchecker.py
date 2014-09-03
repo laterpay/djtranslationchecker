@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import get_app_paths
 
 import fnmatch
-import imp
+import importlib
 import subprocess
 import os
 
@@ -59,7 +59,7 @@ def get_po_filepaths():
 
     pos = []
     for app_name in apps:
-        _, path, _ = imp.find_module(app_name)
+        path = os.path.dirname(importlib.import_module(app_name).__file__)
 
         for root, dirnames, filenames in os.walk(path):
             for filename in fnmatch.filter(filenames, '*.po'):
