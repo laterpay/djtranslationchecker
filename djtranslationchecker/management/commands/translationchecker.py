@@ -11,6 +11,8 @@ class Command(BaseCommand):
         errors = []
 
         for po_filepath in get_po_filepaths():
+            self.stdout.write("Checking %s" % po_filepath)
+
             out = check_po_for_fuzzy_translations(po_filepath)
             if out:
                 errors.append("Fuzzy translation(s) found in %s" % po_filepath)
