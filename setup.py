@@ -5,8 +5,8 @@ import codecs
 import os
 
 #import time
-#_version = "0.9.dev%s" % int(time.time())
-_version = "0.9.0"
+#_version = "0.10.dev%s" % int(time.time())
+_version = "0.10.0"
 _packages = find_packages('.', exclude=["*.tests", "*.tests.*", "tests.*", "tests"])
 
 if os.path.exists('README.rst'):
