@@ -57,7 +57,7 @@ def check_po(command, po_filepath):
 def get_po_filepaths():
     try:
         apps = settings.PROJECT_APPS
-    except KeyError:
+    except AttributeError:
         apps = settings.INSTALLED_APPS
 
     pos = []
