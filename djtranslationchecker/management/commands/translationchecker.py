@@ -55,7 +55,10 @@ def check_po(command, po_filepath):
 
 
 def get_po_filepaths():
-    apps = getattr(settings, 'PROJECT_APPS', settings.INSTALLED_APPS)
+    try:
+        apps = settings.PROJECT_APPS
+    except AttributeError:
+        apps = settings.INSTALLED_APPS
 
     pos = []
     for app_name in apps:
